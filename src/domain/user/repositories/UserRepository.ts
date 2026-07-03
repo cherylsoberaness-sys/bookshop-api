@@ -1,6 +1,7 @@
+import { CreateUserUseCaseInput } from '../use-cases/create-user';
 import { User } from '../User';
 
 export interface UserRepository {
-    create: (params: { email: string, password: string }) => Promise<User>;
+    create: (params: CreateUserUseCaseInput) => Promise<User>;
     findByEmail: (email: string) => Promise<User | null>;
 }
