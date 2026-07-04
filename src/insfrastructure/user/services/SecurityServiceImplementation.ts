@@ -27,4 +27,13 @@ export class SecurityServiceImplementation implements SecurityService {
         
         return token
     }
+
+    verifyJwt(token: string): { iat: number; userId: number; } | null {
+        try {
+            const decodedToken = jwt.verify(token, this.SECRET_KEY);
+            return decodedToken as { iat: number, userId: number }
+        } catch (error) {
+            return null;
+        }
+    }
 }
