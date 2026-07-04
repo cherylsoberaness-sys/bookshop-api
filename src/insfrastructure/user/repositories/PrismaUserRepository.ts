@@ -39,6 +39,7 @@ export class PrismaUserRepository implements UserRepository {
         return this.restore(newUser);
     }
 
+
     private restore(prismaUser: PrismaUser): User {
         return new User({
             id: prismaUser.id,

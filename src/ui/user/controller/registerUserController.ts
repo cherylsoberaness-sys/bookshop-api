@@ -9,7 +9,7 @@ export const registerUserController = async (req: Request, res: Response, next: 
     const { email, password } = req.body
 
     if (!email || !password) {
-        res.status(400).json({ error: 'Los campos name, surname, email y password son obligatorios' })
+        res.status(400).json({ error: 'email y password son obligatorios' })
         return;
     }
 
