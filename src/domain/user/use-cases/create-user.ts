@@ -1,6 +1,7 @@
 import { UserRepository } from "../repositories/UserRepository";
 import { z } from 'zod';
 import { SecurityService } from "../services/SecurityService";
+import { BusinessConflictError } from "../../errors/BusinessConflictError";
 
 const passwordValidationSchema = z
     .string()
@@ -29,14 +30,14 @@ export class CreateUserUseCase {
 
     async execute(input: CreateUserUseCaseInput) {
         
-        this.validateEmail(input.email);
+        emailValidationSchema.parse(input.email);
 
-        this.validatePassword(input.password);
+        passwordValidationSchema.parse(input.password);
 
         const existingUser = await this.userRepository.findByEmail(input.email);
 
         if (existingUser) {
-            throw new Error('An user with that email already exists');
+            throw new BusinessConflictError('An user with that email already exists');
         }
 
         const hashedPassword = await this.securityService.hash(input.password);
@@ -48,22 +49,6 @@ export class CreateUserUseCase {
 
         return newUser
 
-    }
-
-    private validateEmail(email: string) {
-        const result = emailValidationSchema.safeParse(email);
-        
-        if (!result.success) {
-            throw new Error('EMAIL_INVALID');
-        }
-    }
-
-    private validatePassword(password: string) {
-        const result = passwordValidationSchema.safeParse(password);
-
-        if (!result.success) {
-            throw new Error('PASSWORD_INVALID');
-        }
-    }
+    }      
 
 }
