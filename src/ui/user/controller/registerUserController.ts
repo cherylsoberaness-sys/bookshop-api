@@ -26,7 +26,7 @@ export const registerUserController = async (req: Request, res: Response, next: 
             email,
             password
         })
-        res.status(200).json({
+        res.status(201).json({
             message: 'User created successfully'
         });
     } catch (error) {
