@@ -4,6 +4,7 @@ import { BookRepository } from "../../../domain/book/repositories/BookRepository
 import { CreateBookUseCaseInput } from "../../../domain/book/use-cases/create-book";
 import prisma from "../../prisma-client";
 import { EditBookUseCaseInput } from "../../../domain/book/use-cases/edit-book";
+import { RemoveBookUseCaseInput } from "../../../domain/book/use-cases/remove-book";
 
 
 export class PrismaBookRepository implements BookRepository {
@@ -48,12 +49,20 @@ export class PrismaBookRepository implements BookRepository {
                 description: params.description,
                 price: params.price,
                 author: params.author,
-                ownerId: params.ownerId
             }
 
         });
 
         return this.restore(editBook);
+    }
+
+
+    async removeBook(id: number) {
+        await this.prisma.book.delete({
+            where: {
+                id,
+            }
+        })
     }
 
     private restore(prismaBook: PrismaBook): Book {

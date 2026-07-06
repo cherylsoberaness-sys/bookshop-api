@@ -10,13 +10,15 @@ const editBookValidationSquema = z.object({
     author: z.string().min(5).optional()
 });
 
+
 export const editBookController = async (req: Request, res: Response, next: NextFunction) => {
+    const prismaBookRepository = new PrismaBookRepository();
+    const editBookUseCase = new EditBookUseCase(prismaBookRepository);
+    
+    
     try {
         const id = Number(req.params.id);
         const { title, description, price, author } = editBookValidationSquema.parse(req.body);
-
-        const prismaBookRepository = new PrismaBookRepository();
-        const editBookUseCase = new EditBookUseCase(prismaBookRepository);
 
         const editParams: Partial<EditBookUseCaseInput> = {};
 
