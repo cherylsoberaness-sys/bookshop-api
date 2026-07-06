@@ -1,6 +1,6 @@
 import { Entity, EntityProps } from "../shared/entity";
 
-export enum Status {
+export enum BookStatus {
     PUBLISHED = 'PUBLISHED',
     SOLD = 'SOLD'
 }
@@ -10,7 +10,7 @@ export interface PartialBookProps {
     description: string;
     price: number;
     author: string;
-    status: Status;
+    status: BookStatus;
     ownerId: number;
     soldAt: Date | null;
 }
@@ -22,7 +22,7 @@ export class Book extends Entity {
     readonly description: string;
     readonly price: number;
     readonly author: string;
-    readonly status: Status;
+    readonly status: string;
     readonly ownerId: number;
     readonly soldAt: Date | null;
 
