@@ -5,6 +5,7 @@ import { CreateBookUseCaseInput } from "../../../domain/book/use-cases/create-bo
 import prisma from "../../prisma-client";
 import { EditBookUseCaseInput } from "../../../domain/book/use-cases/edit-book";
 import { RemoveBookUseCaseInput } from "../../../domain/book/use-cases/remove-book";
+import { GetbooksUseCaseInput } from "../../../domain/book/use-cases/get-book";
 
 
 export class PrismaBookRepository implements BookRepository {
@@ -30,13 +31,17 @@ export class PrismaBookRepository implements BookRepository {
     }
 
     async findBookById(id: number): Promise<Book | null> {
-        const book = this.prisma.book.findUnique({
+        const book = await this.prisma.book.findUnique({
             where: {
                 id,
             }
         })
 
-        return book;
+        if (!book) {
+            return null;
+        }
+
+        return this.restore(book);
     }
 
     async editBook(params: EditBookUseCaseInput): Promise<Book> {
@@ -63,6 +68,38 @@ export class PrismaBookRepository implements BookRepository {
                 id,
             }
         })
+    }
+
+    async getBooks(criteria: GetbooksUseCaseInput) {
+        const { page, limit } = criteria;
+
+        const [booksDb, booksTotal] = await Promise.all([
+            this.prisma.book.findMany({
+                where: {
+                    ownerId: criteria.ownerId
+                },
+                skip: (page - 1) * limit,
+                take: limit
+            }),
+            this.prisma.book.count({ where: { ownerId: criteria.ownerId } })
+        ])
+
+        /*const books = await this.prisma.book.findMany({
+            where: {
+                ownerId: criteria.ownerId
+            },
+            skip: (page - 1) * limit,
+            take: limit
+
+        });*/
+
+        const books = booksDb.map(bookDb => this.restore(bookDb));
+
+        return { 
+            books,
+            total: booksTotal
+        }
+
     }
 
     private restore(prismaBook: PrismaBook): Book {
