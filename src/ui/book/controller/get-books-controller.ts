@@ -8,6 +8,7 @@ import { PaginatedResponse } from "../../shared/types/PaginatedResponse";
 const getBookQueryParamsSchemaValidator = z.object({
     page: z.coerce.number().positive().default(1),
     limit: z.coerce.number().positive().max(100).default(10),
+    search: z.string().min(3).optional(),
 })
 
 
@@ -17,10 +18,12 @@ export const getBooksController = async (req: Request, res: Response, next: Next
     const getBooksUseCase = new GetBooksUseCase(prismaBookRepository);
 
     try {
-        const { page, limit } = getBookQueryParamsSchemaValidator.parse(req.query);
+        const { page, limit, search } = getBookQueryParamsSchemaValidator.parse(req.query);
         const { books, total } = await getBooksUseCase.execute({ 
             page,
-            limit
+            limit,
+            excludeSold: false,
+            search
         });
 
         const response: PaginatedResponse<Book> = {

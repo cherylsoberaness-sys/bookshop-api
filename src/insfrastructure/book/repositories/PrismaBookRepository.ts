@@ -4,7 +4,6 @@ import { BookRepository } from "../../../domain/book/repositories/BookRepository
 import { CreateBookUseCaseInput } from "../../../domain/book/use-cases/create-book";
 import prisma from "../../prisma-client";
 import { EditBookUseCaseInput } from "../../../domain/book/use-cases/edit-book";
-import { RemoveBookUseCaseInput } from "../../../domain/book/use-cases/remove-book";
 import { GetbooksUseCaseInput } from "../../../domain/book/use-cases/get-book";
 
 
@@ -35,7 +34,7 @@ export class PrismaBookRepository implements BookRepository {
             where: {
                 id,
             }
-        })
+        });
 
         if (!book) {
             return null;
@@ -73,25 +72,29 @@ export class PrismaBookRepository implements BookRepository {
     async getBooks(criteria: GetbooksUseCaseInput) {
         const { page, limit } = criteria;
 
+        const search = criteria.search ? {
+            OR: [
+                { title: { contains: criteria.search, mode: 'insensitive' as const } },
+                { description: { contains: criteria.search, mode: 'insensitive' as const } },
+                { author: { contains: criteria.search, mode: 'insensitive' as const } }
+            ]
+        } : undefined;
+
+        const where = {
+            ...search,
+            status: criteria.excludeSold ?  BookStatus.PUBLISHED : undefined, 
+            ownerId: criteria.ownerId
+        }
+
+
         const [booksDb, booksTotal] = await Promise.all([
             this.prisma.book.findMany({
-                where: {
-                    ownerId: criteria.ownerId
-                },
+                where,
                 skip: (page - 1) * limit,
                 take: limit
             }),
-            this.prisma.book.count({ where: { ownerId: criteria.ownerId } })
-        ])
-
-        /*const books = await this.prisma.book.findMany({
-            where: {
-                ownerId: criteria.ownerId
-            },
-            skip: (page - 1) * limit,
-            take: limit
-
-        });*/
+            this.prisma.book.count({ where })
+        ]);
 
         const books = booksDb.map(bookDb => this.restore(bookDb));
 
