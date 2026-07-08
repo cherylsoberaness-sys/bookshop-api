@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { PrismaBookRepository } from "../../../insfrastructure/book/repositories/PrismaBookRepository";
-import { GetBooksUseCase } from "../../../domain/book/use-cases/get-book";
+import { GetBooksUseCase } from "../../../domain/book/use-cases/get-books";
 import { Book } from "../../../domain/book/Book";
 import { z } from "zod";
 import { PaginatedResponse } from "../../shared/types/PaginatedResponse";
@@ -22,7 +22,7 @@ export const getBooksController = async (req: Request, res: Response, next: Next
         const { books, total } = await getBooksUseCase.execute({ 
             page,
             limit,
-            excludeSold: false,
+            excludeSold: true,
             search
         });
 

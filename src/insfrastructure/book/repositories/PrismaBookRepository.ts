@@ -4,7 +4,7 @@ import { BookRepository } from "../../../domain/book/repositories/BookRepository
 import { CreateBookUseCaseInput } from "../../../domain/book/use-cases/create-book";
 import prisma from "../../prisma-client";
 import { EditBookUseCaseInput } from "../../../domain/book/use-cases/edit-book";
-import { GetbooksUseCaseInput } from "../../../domain/book/use-cases/get-book";
+import { GetbooksUseCaseInput } from "../../../domain/book/use-cases/get-books";
 
 
 export class PrismaBookRepository implements BookRepository {
@@ -69,7 +69,7 @@ export class PrismaBookRepository implements BookRepository {
         })
     }
 
-    async getBooks(criteria: GetbooksUseCaseInput) {
+    async getBooks(criteria: GetbooksUseCaseInput): Promise<{ books: Book[]; total: number}> {
         const { page, limit } = criteria;
 
         const search = criteria.search ? {
@@ -103,6 +103,19 @@ export class PrismaBookRepository implements BookRepository {
             total: booksTotal
         }
 
+    }
+
+    async markAsSold(id: number): Promise<void> {
+        await this.prisma.book.update({
+            where: {
+                id,
+            },
+            data: {
+                status: BookStatus.SOLD,
+                soldAt: new Date()
+            }
+
+        });
     }
 
     private restore(prismaBook: PrismaBook): Book {
