@@ -28,6 +28,20 @@ export class PrismaUserRepository implements UserRepository {
         }
     }
 
+    async findById(id: number): Promise<User | null> {
+        const prismaUser = await this.prisma.user.findUnique({
+            where: {
+                id,
+            }
+        });
+        
+        if (!prismaUser) {
+            return null;
+        }
+
+        return this.restore(prismaUser);
+    }
+
     async create(params: CreateUserUseCaseInput) {
         const newUser = await this.prisma.user.create({
             data: {

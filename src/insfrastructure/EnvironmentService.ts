@@ -5,9 +5,12 @@ import dotenv from 'dotenv';
 
 const environmentVariablesValidator = z.object({
     DATABASE_URL: z.url(),
+    REDIS_URL: z.url(),
     JWT_SECRET: z.string(),
     NODE_ENV: z.enum(['local', 'staging', 'production', 'test']),
-    PORT: z.coerce.number()
+    PORT: z.coerce.number(),
+    MAILDEV_HOST: z.string(),
+    MAILDEV_PORT: z.coerce.number()
 });
 
 type EnvironmentVariables = z.infer<typeof environmentVariablesValidator>;
