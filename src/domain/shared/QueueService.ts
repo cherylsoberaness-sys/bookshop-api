@@ -1,3 +1,4 @@
 export interface QueueService {
-    enqueuePurchasedProductEmail: (params: { userId: number; bookTitle: string }) => void;
+    enqueueBookPurchasedEmail: (params: { ownerId: number; bookTitle: string, bookId: number }) => void;
+    enqueuePriceReductionEmail: (params: { ownerId: number; bookTitle: string, bookId: number }) => void;
 }

@@ -3,7 +3,8 @@ import { Queue } from 'bullmq';
 import { environmentService } from "../EnvironmentService";
 
 export class BullQueueService implements QueueService {
-    private readonly productEmailQueue: Queue;
+    private readonly bookPurchasedEmailQueue: Queue;
+    private readonly priceReductionSuggestionEmailQueue: Queue;
 
     constructor() {
         const { REDIS_URL } = environmentService.get();
@@ -14,11 +15,17 @@ export class BullQueueService implements QueueService {
                 port: Number(redisUrl.port)
             },
         }
-        this.productEmailQueue = new Queue('book-purchased-email', connection);
-
+        this.bookPurchasedEmailQueue = new Queue('book-purchased-email', connection);
+        this.priceReductionSuggestionEmailQueue = new Queue('price-reduction-suggestion-email', connection);
     }
 
-    async enqueuePurchasedProductEmail(params: { userId: number; bookTitle: string }) {
-        await this.productEmailQueue.add('book-purchased-email-job', params);
+    async enqueueBookPurchasedEmail(params: { ownerId: number; bookTitle: string; bookId: number }) {
+        await this.bookPurchasedEmailQueue.
+            add('book-purchased-email-job', params);
+    }
+
+    async enqueuePriceReductionEmail(params: { ownerId: number; bookTitle: string; bookId: number }) {
+        await this.priceReductionSuggestionEmailQueue.
+            add('price-reduction-suggestion-email-job', params);
     }
 }

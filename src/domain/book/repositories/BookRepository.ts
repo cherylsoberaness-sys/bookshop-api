@@ -11,4 +11,5 @@ export interface BookRepository {
     findBookById: (id: number) => Promise<Book | null>;
     getBooks: (criteria: GetbooksUseCaseInput) => Promise<{ books: Book[]; total: number }>;
     markAsSold: (id: number) => Promise<void>;
+    FindPublishedBooksOlderThan: (date: Date) => Promise<Book[]>;
 }

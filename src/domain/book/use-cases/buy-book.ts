@@ -29,9 +29,10 @@ export class BuyBookUseCase {
 
         await this.bookRepository.markAsSold(input.id);
         
-        this.queueService.enqueuePurchasedProductEmail({
-            userId: book.ownerId,
-            bookTitle: book.title
+        this.queueService.enqueueBookPurchasedEmail({
+            ownerId: book.ownerId,
+            bookTitle: book.title,
+            bookId: book.id
         })
     }
 }

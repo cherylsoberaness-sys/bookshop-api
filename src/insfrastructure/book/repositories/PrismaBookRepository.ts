@@ -118,6 +118,21 @@ export class PrismaBookRepository implements BookRepository {
         });
     }
 
+    async FindPublishedBooksOlderThan(date: Date): Promise<Book[]> {
+        const prismaBooks = await this.prisma.book.findMany({
+            where: {
+                status: BookStatus.PUBLISHED,
+                createdAt: {
+                    lte: date,
+                }
+            }
+        });
+
+        const books = prismaBooks.map(book => this.restore(book));
+
+        return books;
+    }
+
     private restore(prismaBook: PrismaBook): Book {
         return new Book({
             id: prismaBook.id,
