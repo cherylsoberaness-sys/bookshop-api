@@ -73,7 +73,25 @@ describe('Post /books', () => {
             const bookId = response.body.id;
             expect(bookId).not.toBeDefined();
 
-        });
+    });
+    test('Given an unvalid token a 401 error is thrown', async () => {
+        const response = await request(api)
+            .post(ENDPOINT)
+            .set('Authorization', 'Bearer dmsdlfkssdfklsajdflsd')
+            .send({
+                title: 'Dune',
+                description: 'Epic science fiction novel set in a distant future in a feudal interstellar society.',
+                price: 30,
+                author: 'Frank Herbert',
+            });
+        expect(response.status).toEqual(401);
+            
+        const books = await prisma.book.findMany();
+        expect(books).toHaveLength(0);
+
+        const bookId = response.body.id;
+        expect(bookId).not.toBeDefined();
+    });
     
     test('Given invalid data an error is thrown', async () => {
         await createUser({});
@@ -99,4 +117,52 @@ describe('Post /books', () => {
         expect(books).toHaveLength(0);
 
     });
+
+    test('An error is returned when title, description, price, or author is not sent', 
+        async () => {
+            await createUser({});
+            const token = await signinUser({});
+
+            const noTitleResponse = await request(api)
+                .post(ENDPOINT)
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    description: 'Epic science fiction novel set in a distant future in a feudal interstellar society.',
+                    price: 30,
+                    author: 'Frank Herbert',
+                });
+
+            expect(noTitleResponse.status).toEqual(400);
+
+            const noDescriptionResponse = await request(api)
+                .post(ENDPOINT)
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    title: 'Dune',
+                    price: 30,
+                    author: 'Frank Herbert',
+                })
+            expect(noDescriptionResponse.status).toEqual(400);
+
+            const noPriceResponse = await request(api)
+                .post(ENDPOINT)
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    title: 'Dune',
+                    description: 'Epic science fiction novel set in a distant future in a feudal interstellar society.',
+                    author: 'Frank Herbert',
+                })
+            expect(noPriceResponse.status).toEqual(400);
+
+            const noAuthorResponse = await request(api)
+                .post(ENDPOINT)
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    title: 'Dune',
+                    description: 'Epic science fiction novel set in a distant future in a feudal interstellar society.',
+                    price: 30
+                })
+            expect(noAuthorResponse.status).toEqual(400);
+        }
+    )
 });
