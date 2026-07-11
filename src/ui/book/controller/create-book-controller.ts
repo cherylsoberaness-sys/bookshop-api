@@ -12,7 +12,6 @@ const createBookValidationSquema = z.object({
 
 
 export const createBookController = async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
     try {
         const { title, description, price, author } = createBookValidationSquema.parse(req.body);
 
@@ -32,7 +31,6 @@ export const createBookController = async (req: Request, res: Response, next: Ne
         res.status(201).json(newBook);
         
     } catch (error) {
-        console.log(error);
         next(error);
     }
 

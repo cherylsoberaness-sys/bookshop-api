@@ -10,6 +10,7 @@ beforeAll(() => {
 });
 
 beforeEach(async () => {
+    await prisma.book.deleteMany();
     await prisma.user.deleteMany();
 });
 
@@ -59,7 +60,7 @@ describe('POST /authentication/signup', () => {
     });
 
      test('when an existing email an error is thrown', async () => {
-        await createUser({email: 'pikachu@gmail.com', password: 'PikaPikaCHUUUU@95' });
+        await createUser({});
 
         const response2 = await request(api).post(ENDPOINT).send({
             email: 'pikachu@gmail.com',
