@@ -12,6 +12,7 @@ Actions users can perform via the API:
 The following actions are allowed with a JWT authentication:
 
 - Create a book: POST /books:
+
   Allowed fields:
   { 
    "title": "Clean Code", 
