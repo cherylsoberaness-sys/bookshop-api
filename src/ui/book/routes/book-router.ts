@@ -4,7 +4,6 @@ import { authenticationMiddleware } from "../../user/middlewares/authentication-
 import { editBookController } from "../controller/edit-book-controller";
 import { removeBookController } from "../controller/remove-book-controller";
 import { getBooksController } from "../controller/get-books-controller";
-import { getMeBooksController } from "../controller/get-me-books-controller";
 import { buyBookController } from "../controller/buy-book-controller";
 
 
@@ -15,4 +14,3 @@ booksRouter.get('/', getBooksController);
 booksRouter.post('/:id/buy', [authenticationMiddleware, buyBookController]);
 booksRouter.patch('/:id', [authenticationMiddleware, editBookController]);
 booksRouter.delete('/:id', [authenticationMiddleware, removeBookController]);
-booksRouter.get('/me', [authenticationMiddleware, getMeBooksController]);

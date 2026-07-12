@@ -17,9 +17,17 @@ export const BOOKOWNERCREDENTIALS = {
 }
 
 
-export async function createBook(overrides: { title?: string, description?: string, price?: number, author?: string }) {
-    await createUser({ email: BOOKOWNERCREDENTIALS.email, password: BOOKOWNERCREDENTIALS.password });
-    const token = await signinUser({ email: BOOKOWNERCREDENTIALS.email, password: BOOKOWNERCREDENTIALS.password });
+export async function createBook(overrides: { title?: string, description?: string, price?: number, author?: string },
+    ownerOverrides?: { email?: string; password?: string }) {
+    
+    const credentials = {
+        ...BOOKOWNERCREDENTIALS,
+        ...ownerOverrides
+    }
+    await createUser(credentials);
+    
+
+    const token = await signinUser(credentials);
 
     const response =
         await request(api)

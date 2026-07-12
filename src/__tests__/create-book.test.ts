@@ -5,7 +5,6 @@ import { prisma } from './test-utils/prsima-client';
 import { createUser } from './test-utils/create-user';
 import { signinUser } from './test-utils/signing-user';
 import { BookStatus } from '../domain/book/Book';
-import { ZodError } from 'zod';
 
 beforeAll(() => {
     environmentService.load();
@@ -74,7 +73,7 @@ describe('Post /books', () => {
             expect(bookId).not.toBeDefined();
 
     });
-    test('Given an unvalid token a 401 error is thrown', async () => {
+    test('Given an invalid token a 401 error is thrown', async () => {
         const response = await request(api)
             .post(ENDPOINT)
             .set('Authorization', 'Bearer dmsdlfkssdfklsajdflsd')
