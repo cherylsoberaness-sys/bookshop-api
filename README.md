@@ -26,7 +26,7 @@ The following actions are allowed with a JWT authentication:
   regardless of the status (PUBLISHED/SOLD).
 - Delete books: DELETE /books/:id
 
-Extra actions implementated:
+Extra actions implemented:
  
 
 - When a book is sold an notification is sent to the book's owner. This is implementated using queues from 'bullmq', Redis, nodemailer
