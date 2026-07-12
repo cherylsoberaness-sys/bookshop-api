@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { api } from '../api';
 import { environmentService } from '../insfrastructure/EnvironmentService';
-import { prisma } from './test-utils/prsima-client';
+import { prisma } from './test-utils/prisma-client';
 import { createUser } from './test-utils/create-user';
 import { signinUser } from './test-utils/signing-user';
 import { BookStatus } from '../domain/book/Book';
