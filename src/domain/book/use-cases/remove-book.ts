@@ -23,7 +23,7 @@ export class RemoveUseCase {
             throw new ForbiddenOperationError('Only owners can delete their books');
         }
         if (book.status !== BookStatus.PUBLISHED) {
-            throw new ForbiddenOperationError('Only unsold books can be deleted');
+            throw new ForbiddenOperationError('Only published books can be deleted');
         }
 
         await this.bookRepository.removeBook(input.id);
