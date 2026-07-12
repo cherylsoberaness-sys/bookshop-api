@@ -12,8 +12,7 @@ Actions users can perform via the API:
 The following actions are allowed with a JWT authentication:
 
 - Create a book: POST /books:
-
-  Allowed fields:
+  ---> Allowed fields:
   { 
    "title": "Clean Code", 
    "description": "Libro en perfecto estado", 
@@ -21,7 +20,7 @@ The following actions are allowed with a JWT authentication:
    "author": "Robert C. Martin" 
   }
 - Edit a book: PATCH /books/:id
-  Allowed fields are the same of creating a book.
+  ---> Allowed fields are the same of creating a book.
 - Buy a book: POST /books/:id/buy
 - Get books from an authenticated user: GET /me/books ---> Returns all the books from an authenticated user
   regardless of the status (PUBLISHED/SOLD).
