@@ -29,7 +29,7 @@ The following actions are allowed with a JWT authentication:
 Extra actions implemented:
  
 
-- When a book is sold an notification is sent to the book's owner. This is implementated using queues from 'bullmq', Redis, nodemailer
+- When a book is sold an notification is sent to the book's owner. This is implemented using queues from 'bullmq', Redis, nodemailer
   and Maildev to simulate the email delivering.
 - Once a week, a cron job checks for books that haven't been sold in the last seven days and sends a notification to the owner
   suggesting to lower the price.
@@ -39,7 +39,7 @@ Extra actions implemented:
 
 - Implementation of hexagonal architecture for the doamin decoupling from infrastructure usage.
 - Differences between domain, infrastructure, controller logic responsibilities and similar flows.
-- Use of queues or distributed events and their differences.
+- Use of queues and distributed events and their differences.
 - Implemantation of Prisma, Docker and pgAdmin for the DB administration.
 - Cron jobs.
 - Testing with jest.
