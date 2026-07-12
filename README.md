@@ -29,7 +29,7 @@ The following endpoints require a valid JWT:
   }
   ```
 - Edit a book: `PATCH /books/:id`
-  - Accepts the same fields as the create endpoint.
+  - Accepts the same fields as the create endpoint. Any field can be updated independently.
 - Buy a book: `POST /books/:id/buy`
 - Get my books: `GET /me/books`
   - Returns all books owned by the authenticated user, regardless of their status (`PUBLISHED` or `SOLD`).
