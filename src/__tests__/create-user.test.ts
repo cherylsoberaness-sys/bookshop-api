@@ -23,15 +23,15 @@ describe('POST /authentication/signup', () => {
 
     test('Given valid data an user is created', async () => {
         const response = await request(api).post(ENDPOINT).send({
-            email: 'pikachu@gmail.com',
-            password: 'PikaPikaCHUUUU@95'
+            email: 'ed@gmail.com',
+            password: 'edHasValidPwd#1'
         });
 
         expect(response.status).toEqual(201);
 
         const createdUser = await prisma.user.findUnique({
             where: {
-                email: 'pikachu@gmail.com'
+                email: 'ed@gmail.com'
             }
         });
 
@@ -41,8 +41,8 @@ describe('POST /authentication/signup', () => {
     test('Given a password not strong enough, an error is thrown', async () => {
 
         const response = await request(api).post(ENDPOINT).send({
-            email: 'pikachu@gmail.com',
-            password: 'pikachuPwd1'
+            email: 'valid@gmail.com',
+            password: 'invalidPwd1'
         })
 
         expect(response.status).toEqual(400);
@@ -52,8 +52,8 @@ describe('POST /authentication/signup', () => {
     test('Given an invalid email an error is thrown', async () => {
 
         const response = await request(api).post(ENDPOINT).send({
-            email: 'pikachugmail.com',
-            password: 'PikaPikaCHUUUU@95'
+            email: 'validgmail.com',
+            password: 'Valid123@.'
         })
 
         expect(response.status).toEqual(400);
@@ -63,8 +63,8 @@ describe('POST /authentication/signup', () => {
         await createUser({});
 
         const response2 = await request(api).post(ENDPOINT).send({
-            email: 'pikachu@gmail.com',
-            password: 'PikaPikaCHUUUU@95'
+            email: 'validEmail@gmail.com',
+            password: 'Valid123@.'
         });
 
         expect(response2.status).toEqual(409);
@@ -72,7 +72,7 @@ describe('POST /authentication/signup', () => {
 
     test('when email is not given an error is thrown', async () => {
         const response = await request(api).post(ENDPOINT).send({
-            password: 'PikaPikaCHUUUU@95'
+            password: 'Valid123@.'
         })
 
         expect(response.status).toEqual(400);
@@ -80,7 +80,7 @@ describe('POST /authentication/signup', () => {
 
     test('when password is not given an error is thrown', async () => {
         const response = await request(api).post(ENDPOINT).send({
-            email: 'pikachugmail.com',
+            email: 'valid@gmail.com',
         })
 
         expect(response.status).toEqual(400);

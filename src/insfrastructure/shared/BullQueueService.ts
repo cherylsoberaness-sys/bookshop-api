@@ -28,4 +28,5 @@ export class BullQueueService implements QueueService {
         await this.priceReductionSuggestionEmailQueue.
             add('price-reduction-suggestion-email-job', params);
     }
+
 }

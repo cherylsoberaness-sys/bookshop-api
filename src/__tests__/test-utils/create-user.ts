@@ -2,8 +2,8 @@ import request from 'supertest';
 import { api } from '../../api';
 
 export const CREDENTIALS = {
-    email: 'pikachu@gmail.com',
-    password: 'PikaPikaCHUUUU@95'
+    email: 'validEmail@gmail.com',
+    password: 'Valid123@.'
 }
 
 export async function createUser(
@@ -17,7 +17,7 @@ export async function createUser(
       ...overrides,
     });
 
-    if (response.status != 201) {
+    if (response.status !== 201) {
         throw new Error(
             `createUser falló con status ${response.status}: ${JSON.stringify(response.body)}`
         );

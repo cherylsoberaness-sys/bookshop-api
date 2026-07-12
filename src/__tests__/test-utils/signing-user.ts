@@ -4,8 +4,8 @@ import { email } from 'zod';
 
 
 export const CREDENTIALS = {
-    email: 'pikachu@gmail.com',
-    password: 'PikaPikaCHUUUU@95'
+    email: 'validEmail@gmail.com',
+    password: 'Valid123@.'
 }
 
 

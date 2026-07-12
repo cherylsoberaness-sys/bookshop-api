@@ -8,7 +8,6 @@ import { PrismaBookRepository } from './insfrastructure/book/repositories/Prisma
 import { PriceReductionSuggestionUseCase } from './domain/book/use-cases/price-reduction-suggestion';
 import { BullQueueService } from './insfrastructure/shared/BullQueueService';
 
-
 environmentService.load();
 
 const { PORT, REDIS_URL } = environmentService.get();
@@ -28,8 +27,7 @@ cron.schedule('0 0 * * 1', async () => {
 
     const prismaBookRepository = new PrismaBookRepository();
     const queueService = new BullQueueService();
-    const priceReductionSuggestionUseCase =
-        new PriceReductionSuggestionUseCase(prismaBookRepository, queueService);
+    const priceReductionSuggestionUseCase = new PriceReductionSuggestionUseCase(prismaBookRepository, queueService);
 
     await priceReductionSuggestionUseCase.execute({ date: sevenDaysAgo });
     console.log('Finished schedule task');
