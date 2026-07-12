@@ -4,7 +4,7 @@
 Actions users can perform via the API:
 
 - Signup: POST /authentication/signup
-- Signin: POST /authentication/signin --> this generates a JWT token for authentication.
+- Signin: POST /authentication/signin --> this generates a JWT token for authentication,
   if the credentials are valid.
 - Get paginated published books from the catalog (sold books are excluded).
 - Partial search: GET /books?page=1&limit=10&search=rowling 
